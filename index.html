@@ -20320,7 +20320,7 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/rowgroup/1.3.0/js/dataTables.rowGroup.js"></script>
- <script>
+<script>
     $(document).ready(function () {
         var table = $('#pricing-table').DataTable({
             "searching": true
@@ -20329,10 +20329,12 @@
         // Clear previous highlights
         $('#pricing-table tbody tr td').removeClass('min-price green');
 
-        // Iterate over each row in the table
-        $('#pricing-table tbody tr').each(function () {
-            var row = $(this);
-            var prices = row.find('td').slice(1); // Skip the first column (Instance Type)
+        // Get all data rows (not just visible ones)
+        var data = table.rows().data();
+
+        // Iterate over each row in the data
+        $.each(data, function (rowIndex, rowData) {
+            var prices = $(rowData).slice(1); // Skip the first column (Instance Type)
 
             var minPrice = Infinity;
             var minIndex = -1;
@@ -20358,7 +20360,7 @@
             });
 
             // Log the minimum price found for the current row
-            console.log('Row:', row.text(), 'Min Price:', minPrice, 'Min Index:', minIndex);
+            console.log('Row:', rowData, 'Min Price:', minPrice, 'Min Index:', minIndex);
 
             // Highlight all instances of the minimum price
             prices.each(function () {
@@ -20379,6 +20381,7 @@
         });
     });
 </script>
+
 
 
 </body>
