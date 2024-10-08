@@ -20345,9 +20345,15 @@
                 // Log the current price being evaluated
                 console.log('Evaluating price:', priceText, 'Parsed price:', price);
 
-                if (price < minPrice) {
-                    minPrice = price;
-                    minIndex = index;
+                // Check for valid prices
+                if (!isNaN(price)) {
+                    if (price < minPrice) {
+                        minPrice = price;
+                        minIndex = index;
+                    }
+                } else {
+                    // Log the invalid entry
+                    console.log('Invalid price found for index:', index, 'Value:', priceText);
                 }
             });
 
@@ -20369,6 +20375,7 @@
         });
     });
 </script>
+
 </body>
 
 </html>
