@@ -20334,14 +20334,13 @@
 
         // Iterate over each row in the data
         $.each(data, function (rowIndex, rowData) {
-            var prices = $(rowData).slice(1); // Skip the first column (Instance Type)
+            var prices = rowData.slice(1); // Skip the first column (Instance Type)
 
             var minPrice = Infinity;
             var minIndex = -1;
 
             // Loop through the prices to find the minimum value
-            prices.each(function (index) {
-                var priceText = $(this).text();
+            $.each(prices, function (index, priceText) {
                 var price = parseFloat(priceText.replace(/[^0-9.-]+/g, "")); // Convert the text to a float
 
                 // Log the current price being evaluated
@@ -20363,19 +20362,19 @@
             console.log('Row:', rowData, 'Min Price:', minPrice, 'Min Index:', minIndex);
 
             // Highlight all instances of the minimum price
-            prices.each(function () {
-                var priceText = $(this).text();
+            prices.each(function (priceText, index) {
                 var price = parseFloat(priceText.replace(/[^0-9.-]+/g, ""));
                 if (price === minPrice) {
-                    $(this).addClass('min-price');
+                    // Highlight the corresponding cell
+                    $($('#pricing-table tbody tr')[rowIndex]).find('td').eq(index + 1).addClass('min-price');
                     console.log('Highlighting min-price for value:', priceText);
                 }
             });
 
             // Check if the first column is the minimum price and apply the green class
-            var firstColumnPrice = parseFloat(prices.eq(0).text().replace(/[^0-9.-]+/g, ""));
+            var firstColumnPrice = parseFloat(prices[0].replace(/[^0-9.-]+/g, ""));
             if (firstColumnPrice === minPrice) {
-                prices.eq(0).addClass('green');
+                $($('#pricing-table tbody tr')[rowIndex]).find('td').eq(1).addClass('green');
                 console.log('Highlighting first column as green with price:', firstColumnPrice);
             }
         });
