@@ -20327,6 +20327,38 @@
             });
         });
     </script>
+     <script>
+        $(document).ready(function () {
+            var table = $('#pricing-table').DataTable({
+                "searching": true
+            });
+
+            // Iterate over each row in the table
+            $('#pricing-table tbody tr').each(function () {
+                var row = $(this);
+                var prices = row.find('td').slice(1); // Skip the first column (Instance Type)
+
+                var minPrice = Infinity;
+                var minIndex = -1;
+
+                // Loop through the prices to find the minimum value
+                prices.each(function (index) {
+                    var priceText = $(this).text();
+                    var price = parseFloat(priceText.replace(/[^0-9.-]+/g, "")); // Convert the text to a float
+
+                    if (price < minPrice) {
+                        minPrice = price;
+                        minIndex = index;
+                    }
+                });
+
+                // Add the 'min-price' class to the column with the minimum price
+                if (minIndex !== -1) {
+                    prices.eq(minIndex).addClass('min-price');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
