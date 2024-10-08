@@ -20329,18 +20329,17 @@
         // Clear previous highlights
         $('#pricing-table tbody tr td').removeClass('min-price green');
 
-        // Get all data rows (not just visible ones)
-        var data = table.rows().data();
-
-        // Iterate over each row in the data
-        $.each(data, function (rowIndex, rowData) {
-            var prices = rowData.slice(1); // Skip the first column (Instance Type)
+        // Iterate over each row in the table
+        $('#pricing-table tbody tr').each(function () {
+            var row = $(this);
+            var prices = row.find('td').slice(1); // Skip the first column (Instance Type)
 
             var minPrice = Infinity;
             var minIndex = -1;
 
             // Loop through the prices to find the minimum value
-            $.each(prices, function (index, priceText) {
+            prices.each(function (index) {
+                var priceText = $(this).text();
                 var price = parseFloat(priceText.replace(/[^0-9.-]+/g, "")); // Convert the text to a float
 
                 // Log the current price being evaluated
@@ -20359,27 +20358,28 @@
             });
 
             // Log the minimum price found for the current row
-            console.log('Row:', rowData, 'Min Price:', minPrice, 'Min Index:', minIndex);
+            console.log('Row:', row.text(), 'Min Price:', minPrice, 'Min Index:', minIndex);
 
             // Highlight all instances of the minimum price
-            prices.each(function (priceText, index) {
+            prices.each(function () {
+                var priceText = $(this).text();
                 var price = parseFloat(priceText.replace(/[^0-9.-]+/g, ""));
                 if (price === minPrice) {
-                    // Highlight the corresponding cell
-                    $($('#pricing-table tbody tr')[rowIndex]).find('td').eq(index + 1).addClass('min-price');
+                    $(this).addClass('min-price');
                     console.log('Highlighting min-price for value:', priceText);
                 }
             });
 
             // Check if the first column is the minimum price and apply the green class
-            var firstColumnPrice = parseFloat(prices[0].replace(/[^0-9.-]+/g, ""));
+            var firstColumnPrice = parseFloat(prices.eq(0).text().replace(/[^0-9.-]+/g, ""));
             if (firstColumnPrice === minPrice) {
-                $($('#pricing-table tbody tr')[rowIndex]).find('td').eq(1).addClass('green');
+                prices.eq(0).addClass('green');
                 console.log('Highlighting first column as green with price:', firstColumnPrice);
             }
         });
     });
 </script>
+
 
 
 
