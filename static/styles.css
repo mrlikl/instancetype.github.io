@@ -55,3 +55,9 @@ tr:hover {
 .heatmap-3 {
     background-color: #e34a33;
 }
+
+.min-price {
+    background-color: #d4edda; /* Light green background */
+    color: #155724; /* Dark green text */
+    font-weight: bold;
+}
